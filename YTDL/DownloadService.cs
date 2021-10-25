@@ -22,10 +22,10 @@ namespace YTDL
             switch (menuInput)
             {
                 case MainMenuOptions.AUDIO:
-                    //ExecuteAudioRequest();
+                    ExecuteAudioRequest();
                     break;
                 case MainMenuOptions.VIDEO:
-                    //GetVideoRequest();
+                    GetVideoRequest();
                     break;
                 case MainMenuOptions.CHANGE_DIRECTORY:
                     ChangeOutputDirectory();
@@ -103,18 +103,51 @@ namespace YTDL
          */
         public static void ExecuteAudioRequest()
         {
-           //TODO
+            //Get directory to output media
+            var mediaOutputDirectory = GetOutputDirectory();
+
+            //Get youtube url as user input
+            Console.WriteLine("|| Audio Request Menu ||\n\nPlease enter a youtube URL or enter ' to go to menu:\n");
+            var youtubeUrl = Console.ReadLine();
+
+            //Will not continue unless it is a valid youtube url
+            IsValidYoutubeUrl(youtubeUrl);
+
+            ExecuteDownloadRequest(youtubeUrl, mediaOutputDirectory, CmdLineArg.AUDIO);
         }
 
         //See ExecuteAudioRequest comments for how this works.
         public static void GetVideoRequest()
         {
-            //TODO
+            //Get directory to output media
+            var mediaOutputDirectory = GetOutputDirectory();
+
+            //Get youtube url as user input
+            Console.WriteLine("\n|| Video Request Menu ||\nPlease enter the youtube URL:\n");
+            var youtubeUrl = Console.ReadLine();
+
+            //Will not continue unless it is a valid youtube url
+            IsValidYoutubeUrl(youtubeUrl);
+
+            ExecuteDownloadRequest(youtubeUrl, mediaOutputDirectory, CmdLineArg.VIDEO);
         }
 
        public static void ExecuteDownloadRequest(string youtubeUrl, string mediaOutputDirectory, string mediaRequestType)
         {
-            //TODO
+            if (mediaRequestType == CmdLineArg.AUDIO)
+            {
+                //Build and execute audio request
+                string youtubeDlRequest = "/c cd " + mediaOutputDirectory + MediaRequest.AUDIO_MP3_REQUEST + youtubeUrl;
+                Console.WriteLine("Downloading your audio request.  Please wait...");
+                Process.Start("CMD.exe", youtubeDlRequest).WaitForExit();
+            }
+            if (mediaRequestType == CmdLineArg.VIDEO)
+            {
+                //Build and execute video request
+                string youtubeDlRequest = "/c cd " + mediaOutputDirectory + MediaRequest.VIDEO_REQUEST + youtubeUrl;
+                Console.WriteLine("Downloading your audio request.  Please wait...");
+                Process.Start("CMD.exe", youtubeDlRequest).WaitForExit();
+            }
         }
 
 
